@@ -23,6 +23,10 @@ mongoose
 
 // Requests //
 
+app.get('/', (req, res) =>
+  res.send(`<h1>Welcome to Solve It1</h1> <a>Go to Solve It page</a>`)
+);
+
 // Register
 app.post('/register', async (req, res) => {
   try {
