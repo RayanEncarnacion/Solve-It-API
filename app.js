@@ -36,7 +36,9 @@ app.post('/register', async (req, res) => {
         username: req.body.username,
         password: hashedPass,
       });
-      res.status(200).json({ message: 'Your user has been created.' });
+      res
+        .status(200)
+        .json({ success: true, message: 'Your user has been created.' });
     } else res.status(401).json({ message: 'Password do not match!' });
   } catch (error) {
     res.status(500).json(error);
