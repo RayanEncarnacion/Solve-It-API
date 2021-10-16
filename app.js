@@ -78,10 +78,25 @@ app.post('/login', async (req, res) => {
 
 app.get('/main', async (req, res) => {
   try {
-    const tickets = await Ticket.find();
+    const tickets = await Ticket.find({ status: 'uncompleted' });
     tickets.length === 0
       ? res.status(200).json({ empty: 0 })
       : res.status(200).json({ tickets });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+app.put('/main/:name/:status', async (req, res) => {
+  try {
+    const ticket = await Ticket.findOneAndUpdate(
+      { name: req.params.name },
+      { status: req.params.status },
+      { new: true, useFindAndModify: false }
+    );
+    ticket
+      ? res.json({ success: true })
+      : res.json({ message: 'Cant find a ticket with that name.' });
   } catch (error) {
     res.status(500).json(error);
   }
