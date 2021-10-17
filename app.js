@@ -87,11 +87,13 @@ app.get('/main', async (req, res) => {
   }
 });
 
-app.post('/main', async (req, res) => {
+app.post('/main/:name/:status', async (req, res) => {
+  req.params.name.replaceAll('&', ' ');
+  console.log(req.params.name);
   try {
     const ticket = await Ticket.findOneAndUpdate(
-      { name: req.body.name },
-      { status: req.body.status },
+      { name: req.params.name },
+      { status: req.params.status },
       { new: true, useFindAndModify: false }
     );
     ticket
