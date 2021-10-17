@@ -90,8 +90,10 @@ app.get('/main', async (req, res) => {
 app.post('/main/solved', async (req, res) => {
   try {
     const ticket = await Ticket.findOneAndUpdate(
-      { name: req.body.name },
+      { name: req.body.ticketName },
       { status: req.body.status },
+      { completedBy: req.body.user },
+      { answer: req.body.answer },
       { new: true, useFindAndModify: false }
     );
     console.log(ticket);

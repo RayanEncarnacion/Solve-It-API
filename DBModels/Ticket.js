@@ -31,6 +31,15 @@ const ticketSchema = mongoose.Schema(
       type: String,
       default: 'Uncompleted',
     },
+    creator: {
+      type: String,
+      require: true,
+    },
+    completedBy: {
+      type: String,
+      default: '',
+    },
+    answer: { type: String },
   },
   { timestamps: true }
 );
