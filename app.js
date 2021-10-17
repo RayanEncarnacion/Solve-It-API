@@ -78,7 +78,7 @@ app.post('/login', async (req, res) => {
 
 app.get('/main', async (req, res) => {
   try {
-    const tickets = await Ticket.find({ status: 'uncompleted' });
+    const tickets = await Ticket.find({ status: 'Uncompleted' });
     tickets.length === 0
       ? res.status(200).json({ empty: 0 })
       : res.status(200).json({ tickets });
@@ -87,7 +87,7 @@ app.get('/main', async (req, res) => {
   }
 });
 
-app.put('/main/:name/:status', async (req, res) => {
+app.post('/main/:name/:status', async (req, res) => {
   try {
     const ticket = await Ticket.findOneAndUpdate(
       { name: req.params.name },
