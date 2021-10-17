@@ -87,17 +87,14 @@ app.get('/main', async (req, res) => {
   }
 });
 
-app.post('/main/:name/:status', async (req, res) => {
-  const ticketName = req.params.name.includes('+')
-    ? req.params.name.split('+').join(' ')
-    : req.params.name;
-
+app.post('/main/solved', async (req, res) => {
   try {
     const ticket = await Ticket.findOneAndUpdate(
-      { name: ticketName },
-      { status: req.params.status },
+      { name: req.body.name },
+      { status: req.body.status },
       { new: true, useFindAndModify: false }
     );
+    console.log(ticket);
     ticket
       ? res.json({ success: true })
       : res.json({ message: 'Cant find a ticket with that name.' });
