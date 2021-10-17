@@ -29,7 +29,7 @@ const ticketSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'uncompleted',
+      default: 'Uncompleted',
     },
   },
   { timestamps: true }

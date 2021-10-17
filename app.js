@@ -87,11 +87,11 @@ app.get('/main', async (req, res) => {
   }
 });
 
-app.post('/main/:name/:status', async (req, res) => {
+app.post('/main', async (req, res) => {
   try {
     const ticket = await Ticket.findOneAndUpdate(
-      { name: req.params.name },
-      { status: req.params.status },
+      { name: req.body.name },
+      { status: req.body.status },
       { new: true, useFindAndModify: false }
     );
     ticket
