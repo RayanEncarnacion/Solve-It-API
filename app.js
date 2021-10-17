@@ -87,7 +87,7 @@ app.get('/main', async (req, res) => {
   }
 });
 
-app.post('/main/solved', async (req, res) => {
+app.post('/main/completed', async (req, res) => {
   try {
     const ticket = await Ticket.findByIdAndUpdate(
       req.body.id,
@@ -98,10 +98,22 @@ app.post('/main/solved', async (req, res) => {
       },
       { new: true, useFindAndModify: false }
     );
-    console.log(ticket);
     ticket
       ? res.json({ success: true })
       : res.json({ message: 'Cant find a ticket with that name.' });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+app.post('/main/solved', async (req, res) => {
+  try {
+    const ticket = await Ticket.find({ completedBy: req.body.user });
+
+    console.log(ticket);
+    ticket
+      ? res.json({ success: true, ticket })
+      : res.json({ empty: 0, message: 'Cant find a ticket with that name.' });
   } catch (error) {
     res.status(500).json(error);
   }
