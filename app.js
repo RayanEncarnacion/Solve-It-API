@@ -74,6 +74,19 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.post('/main/user', async (req, res) => {
+  try {
+    const user = await User.findById(req.body.id);
+
+    if (user) {
+      const { password, ...securedUser } = user._doc;
+      res.status(200).json(securedUser);
+    } else res.status(401).json({ message: 'User not found!' });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // Main //
 
 app.get('/main', async (req, res) => {
@@ -121,6 +134,7 @@ app.post('/main/completed', async (req, res) => {
         useFindAndModify: false,
       }
     );
+    console.log(user);
 
     ticket
       ? res.json({ success: true })
