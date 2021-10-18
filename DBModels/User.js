@@ -20,7 +20,8 @@ const userSchema = mongoose.Schema({
     default: 0,
   },
   solved: {
-    type: Array,
+    type: Number,
+    default: 0,
   },
   totalTime: {
     type: Number,

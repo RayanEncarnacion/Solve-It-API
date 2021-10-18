@@ -86,6 +86,18 @@ app.get('/main', async (req, res) => {
     res.status(500).json(error);
   }
 });
+app.get('/main/:name', async (req, res) => {
+  try {
+    const ticket = await Ticket.findOne({ name: req.params.name });
+    ticket
+      ? res.status(200).json({ success: true, answer: ticket.answer })
+      : res
+          .status(401)
+          .json({ message: 'Any ticket with the provided name was found!' });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 app.post('/main/completed', async (req, res) => {
   try {
@@ -98,6 +110,18 @@ app.post('/main/completed', async (req, res) => {
       },
       { new: true, useFindAndModify: false }
     );
+
+    // Increment number of solved problems by user
+    const user = await User.findByIdAndUpdate(
+      req.body.userID,
+      // Increment by 1
+      { $inc: { solved: 1 } },
+      {
+        new: true,
+        useFindAndModify: false,
+      }
+    );
+
     ticket
       ? res.json({ success: true })
       : res.json({ message: 'Cant find a ticket with that name.' });
@@ -109,8 +133,6 @@ app.post('/main/completed', async (req, res) => {
 app.post('/main/solved', async (req, res) => {
   try {
     const ticket = await Ticket.find({ completedBy: req.body.user });
-
-    console.log(ticket);
     ticket
       ? res.json({ success: true, ticket })
       : res.json({ empty: 0, message: 'Cant find a ticket with that name.' });
