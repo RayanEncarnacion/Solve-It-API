@@ -115,7 +115,7 @@ app.post('/main/completed', async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.body.userID,
       // Increment by 1
-      { $inc: { solved: 1 } },
+      { $inc: { solved: 1, points: req.body.points } },
       {
         new: true,
         useFindAndModify: false,
