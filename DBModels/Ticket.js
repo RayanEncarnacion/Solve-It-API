@@ -23,10 +23,6 @@ const ticketSchema = mongoose.Schema(
       type: String,
       require: true,
     },
-    totalTime: {
-      type: Number,
-      default: 0,
-    },
     status: {
       type: String,
       default: 'Uncompleted',

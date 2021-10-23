@@ -114,6 +114,7 @@ app.get('/main/:name', async (req, res) => {
 
 app.post('/main/completed', async (req, res) => {
   try {
+    console.log(req.body);
     const ticket = await Ticket.findByIdAndUpdate(
       req.body.id,
       {
@@ -123,6 +124,8 @@ app.post('/main/completed', async (req, res) => {
       },
       { new: true, useFindAndModify: false }
     );
+
+    console.log(ticket);
 
     // Increment number of solved problems by user
     const user = await User.findByIdAndUpdate(
