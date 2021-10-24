@@ -68,7 +68,6 @@ app.post('/login', async (req, res) => {
           })
         : res.status(401).json({ message: 'Password incorrect!' });
     } else res.status(401).json({ message: 'User not found!' });
-    //
   } catch (error) {
     res.status(500).json(error);
   }
