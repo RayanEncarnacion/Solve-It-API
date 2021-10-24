@@ -74,6 +74,19 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// Main
+app.post('/main', async (req, res) => {
+  try {
+    const tickets = await Ticket.find({ status: 'Uncompleted' });
+    tickets.length === 0
+      ? res.status(200).json({ empty: 0 })
+      : res.status(200).json({ tickets });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// Get user information
 app.post('/main/user', async (req, res) => {
   try {
     const user = await User.findById(req.body.id);
@@ -87,18 +100,23 @@ app.post('/main/user', async (req, res) => {
   }
 });
 
-// Main //
-
-app.get('/main', async (req, res) => {
+// Create a ticket
+app.post('/main/ticket', async (req, res) => {
   try {
-    const tickets = await Ticket.find({ status: 'Uncompleted' });
-    tickets.length === 0
-      ? res.status(200).json({ empty: 0 })
-      : res.status(200).json({ tickets });
+    const ticket = await Ticket.create({
+      name: req.body.name,
+      explanation: req.body.explanation,
+      points: req.body.points,
+      urgency: req.body.urgency,
+      type: req.body.type,
+    });
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json(error);
   }
 });
+
+// Find a ticket
 app.get('/main/:name', async (req, res) => {
   try {
     const ticket = await Ticket.findOne({ name: req.params.name });
@@ -112,9 +130,9 @@ app.get('/main/:name', async (req, res) => {
   }
 });
 
+// Update ticket and user
 app.post('/main/completed', async (req, res) => {
   try {
-    console.log(req.body);
     const ticket = await Ticket.findByIdAndUpdate(
       req.body.id,
       {
@@ -124,8 +142,6 @@ app.post('/main/completed', async (req, res) => {
       },
       { new: true, useFindAndModify: false }
     );
-
-    console.log(ticket);
 
     // Increment number of solved problems by user
     const user = await User.findByIdAndUpdate(
@@ -137,7 +153,6 @@ app.post('/main/completed', async (req, res) => {
         useFindAndModify: false,
       }
     );
-    console.log(user);
 
     ticket
       ? res.json({ success: true })
@@ -147,6 +162,7 @@ app.post('/main/completed', async (req, res) => {
   }
 });
 
+// Show solved tickets
 app.post('/main/solved', async (req, res) => {
   try {
     const ticket = await Ticket.find({ completedBy: req.body.user });
@@ -158,6 +174,7 @@ app.post('/main/solved', async (req, res) => {
   }
 });
 
+// Start app
 app.listen(port, () => {
   console.log(`Server running on ${port}!`);
 });

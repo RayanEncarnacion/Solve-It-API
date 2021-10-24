@@ -13,15 +13,15 @@ const ticketSchema = mongoose.Schema(
     },
     points: {
       type: Number,
-      default: 0,
+      required: true,
     },
     urgency: {
       type: String,
-      default: 'Normal',
+      required: true,
     },
     type: {
       type: String,
-      require: true,
+      required: true,
     },
     status: {
       type: String,
@@ -29,11 +29,10 @@ const ticketSchema = mongoose.Schema(
     },
     creator: {
       type: String,
-      require: true,
+      default: 'Engineer',
     },
     completedBy: {
       type: String,
-      default: '',
     },
     answer: { type: String },
   },
