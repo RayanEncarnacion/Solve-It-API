@@ -75,7 +75,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Main
-app.post('/main', async (req, res) => {
+app.get('/main', async (req, res) => {
   try {
     const tickets = await Ticket.find({ status: 'Uncompleted' });
     tickets.length === 0
